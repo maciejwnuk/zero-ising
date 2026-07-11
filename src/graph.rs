@@ -63,12 +63,7 @@ impl Graph {
         self.adj.len()
     }
 
-    pub fn nbrs(&self, i: usize) -> &[usize] {
-        assert!(
-            i < self.adj.len(),
-            "Can't take neighbourhood of node larger than graph size"
-        );
-
-        &self.adj[i]
+    pub fn adj(&self) -> &[Vec<usize>] {
+        &self.adj
     }
 }

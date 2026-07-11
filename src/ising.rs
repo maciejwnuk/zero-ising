@@ -79,8 +79,8 @@ impl Ising {
 
             // sum_(j in Nbrs(i)) s^j
             let spins_nbrs = {
-                self.graph.nbrs(i)
-                    .into_iter()
+                self.graph.adj()[i]
+                    .iter()
                     .zip(&self.spins)
                     .map(|(a, b)| *a as i8 * b)
                     .map(f64::from)
@@ -102,5 +102,20 @@ impl Ising {
 
     pub fn state(&self) -> &[i8] {
         &self.spins
+    }
+
+    pub fn energy(&self) -> f64 {
+        let spins = self.spins.iter()
+            .zip(self.graph.adj().iter())
+            .map(|(s_i, nbrs)| {
+                *s_i as f64 * nbrs.iter()
+                    .zip(self.spins.iter())
+                    .map(|(m_ij, s_j)| *m_ij as i8 * s_j)
+                    .map(f64::from)
+                    .sum::<f64>()
+            })
+            .sum::<f64>();
+
+        -self.fields.0 * spins - self.fields.1
     }
 }
