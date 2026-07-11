@@ -104,6 +104,13 @@ impl Ising {
         &self.spins
     }
 
+    pub fn magnetization(&self) -> isize {
+        self.spins.iter()
+            .copied()
+            .map(isize::from)
+            .sum::<isize>()
+    }
+
     pub fn energy(&self) -> f64 {
         let spins = self.spins.iter()
             .zip(self.graph.adj().iter())
