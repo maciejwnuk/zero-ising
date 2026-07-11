@@ -112,7 +112,7 @@ impl Ising {
     }
 
     pub fn energy(&self) -> f64 {
-        let spins = self.spins.iter()
+        let spin_product = self.spins.iter()
             .zip(self.graph.adj().iter())
             .map(|(s_i, nbrs)| {
                 *s_i as f64 * nbrs.iter()
@@ -123,6 +123,6 @@ impl Ising {
             })
             .sum::<f64>();
 
-        -self.fields.0 * spins - self.fields.1
+        -self.fields.0 * spin_product - self.fields.1
     }
 }
