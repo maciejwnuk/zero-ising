@@ -6,7 +6,7 @@ Project done as engineering thesis at Warsaw University of Technology (WUT), Pol
 
 ## Description
 
-The simulator implements a modified Glauber dynamics algorithm for the Ising model Hamiltonian:
+The simulation implements a modified Glauber dynamics algorithm for the Ising model Hamiltonian:
 
 $$H = -J \sum_{\langle i,j \rangle} s_i s_j - h \sum_i s_i$$
 
