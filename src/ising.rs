@@ -123,6 +123,11 @@ impl Ising {
             })
             .sum::<f64>();
 
-        -self.fields.0 * spin_product - self.fields.1
+        let spin_sum = self.spins.iter()
+            .copied()
+            .map(f64::from)
+            .sum::<f64>();
+
+        - self.fields.0 * spin_product - self.fields.1 * spin_sum
     }
 }
