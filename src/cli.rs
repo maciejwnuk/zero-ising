@@ -17,7 +17,7 @@ pub enum TemperatureDirection {
 }
 
 #[derive(Parser)]
-#[command(name = "Zero-Ising")]
+#[command(name = "ising")]
 #[command(version = "0.0.1")]
 #[command(about = "
 \u{001B}[1m\u{001B}[4mZero-Ising\u{001B}[22m\u{001B}[24m

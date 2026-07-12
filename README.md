@@ -33,7 +33,7 @@ cargo build --release
 ## Usage
 
 ```
-zero-ising <SPINS> <TOPOLOGY> [FILE] [OPTIONS]
+ising <SPINS> <TOPOLOGY> [FILE] [OPTIONS]
 ```
 
 ### Positional arguments
