@@ -33,7 +33,7 @@ pub struct Args {
     #[arg(
         short,
         long,
-        default_value = "1000",
+        default_value = "100",
         help = "Simulation steps at given temperature"
     )]
     pub steps: usize,
@@ -92,7 +92,7 @@ pub struct Args {
     #[arg(
         long,
         value_name = "STEPS",
-        default_value = "100",
+        default_value = "1000",
         help = "Temperature points"
     )]
     pub temp_steps: usize,
@@ -109,8 +109,8 @@ pub struct Args {
     #[arg(
         long,
         value_name = "STEPS",
-        default_value = "1000",
-        help = "Thermalization (initialization) steps"
+        default_value = "100",
+        help = "Thermalization steps"
     )]
     pub therm_steps: usize
 }
