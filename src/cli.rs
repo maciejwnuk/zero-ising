@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{
     Parser,
     ValueEnum
@@ -35,6 +37,13 @@ pub struct Args {
         help = "Topology of graph underlying the model"
     )]
     pub topology: Topology,
+
+    #[arg(
+        value_name = "FILE",
+        default_value = "output.csv",
+        help = "Output data filename"
+    )]
+    pub output: PathBuf,
 
     #[arg(
         short,

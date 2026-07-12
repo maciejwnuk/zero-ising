@@ -1,4 +1,10 @@
-use std::io::{self, Write};
+use std::{
+    fs,
+    io::{
+        self,
+        Write
+    }
+};
 
 use clap::Parser;
 
@@ -30,6 +36,8 @@ fn main() -> Result<(), io::Error> {
         },
     };
 
+    let mut output = String::from("n,T,E,s\n");
+
     for temp in temperatures {
         println!("Temperature: {temp:.2} K/kB");
 
@@ -47,14 +55,19 @@ fn main() -> Result<(), io::Error> {
             model.step(temp);
 
             if step % args.probe_step == 0 {
-                println!(
-                    "Energy: {:.2}, magnetization: {:.2}",
+                output.push_str(&format!(
+                    "{},{:.2},{:.2},{:.2}\n",
+                    args.size,
+                    temp,
                     model.energy(),
                     model.magnetization()
-                );
+                ));
             }
         }
     }
+
+    let mut file = fs::File::create(args.output)?;
+    file.write(output.as_bytes())?;
 
     Ok(())
 }
