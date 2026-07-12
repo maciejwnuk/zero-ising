@@ -13,16 +13,6 @@ fn main() -> Result<(), io::Error> {
 
     let mut model = ising::Ising::new(graph, args.spins, fields);
 
-    print!("Thermalizing... ");
-    io::stdout().flush()?;
-
-    for _ in 0..args.therm_steps {
-        model.step(args.temp_low);
-    }
-
-    print!("done.\n");
-    io::stdout().flush()?;
-
     let temperatures = match args.temp_dir {
         cli::TemperatureDirection::Asc => {
             linspace(
@@ -40,9 +30,18 @@ fn main() -> Result<(), io::Error> {
         },
     };
 
-    println!("Begin simulation");
     for temp in temperatures {
-        println!("Temperature: {temp}");
+        println!("Temperature: {temp:.2} K");
+
+        print!("Thermalizing... ");
+        io::stdout().flush()?;
+
+        for _ in 0..args.therm_steps {
+            model.step(temp);
+        }
+
+        print!("done.\n");
+        io::stdout().flush()?;
 
         for step in 0..args.steps {
             model.step(temp);
