@@ -51,6 +51,9 @@ fn main() -> Result<(), io::Error> {
         print!("done.\n");
         io::stdout().flush()?;
 
+        print!("Collecting... ");
+        io::stdout().flush()?;
+
         for step in 0..args.steps {
             model.step(temp);
 
@@ -64,6 +67,9 @@ fn main() -> Result<(), io::Error> {
                 ));
             }
         }
+
+        print!("done.\n");
+        io::stdout().flush()?;
     }
 
     let mut file = fs::File::create(args.output)?;
