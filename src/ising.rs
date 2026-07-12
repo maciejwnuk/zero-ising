@@ -20,7 +20,7 @@ pub enum States {
 }
 
 #[derive(Debug, Clone)]
-pub struct Fields(f64, f64);
+pub struct Fields(pub f64, pub f64);
 
 #[derive(Debug)]
 pub struct Ising {

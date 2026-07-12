@@ -25,18 +25,18 @@ Project done as engineering thesis at WUT, PL.\
 ", long_about = None)]
 pub struct Args {
     #[arg(value_enum)]
-    spins: States,
+    pub spins: States,
 
     #[arg(value_enum)]
-    topology: Topology,
+    pub topology: Topology,
 
     #[arg(
         short,
         long,
         default_value = "1000",
-        help = "Simulation steps"
+        help = "Simulation steps at given temperature"
     )]
-    steps: usize,
+    pub steps: usize,
 
     #[arg(
         long,
@@ -44,7 +44,7 @@ pub struct Args {
         default_value = "10",
         help = "Modulus-step for data acquisition"
     )]
-    probe_step: usize,
+    pub probe_step: usize,
 
     #[arg(
         short = 'S',
@@ -52,7 +52,7 @@ pub struct Args {
         default_value = "1000",
         help = "Nodes in chain/graph"
     )]
-    size: usize,
+    pub size: usize,
 
     #[arg(
         short,
@@ -61,7 +61,7 @@ pub struct Args {
         default_value = "1.0",
         help = "Internal field (J) strength"
     )]
-    internal: f64,
+    pub internal: f64,
 
     #[arg(
         short,
@@ -70,7 +70,7 @@ pub struct Args {
         default_value = "1.0",
         help = "External field (h) strength"
     )]
-    external: f64,
+    pub external: f64,
 
     #[arg(
         long,
@@ -78,7 +78,7 @@ pub struct Args {
         default_value = "0.0",
         help = "Temperature lower bound"
     )]
-    temp_low: f64,
+    pub temp_low: f64,
 
 
     #[arg(
@@ -87,7 +87,7 @@ pub struct Args {
         default_value = "10.0",
         help = "Temperature upper bound"
     )]
-    temp_high: f64,
+    pub temp_high: f64,
 
     #[arg(
         long,
@@ -95,7 +95,7 @@ pub struct Args {
         default_value = "100",
         help = "Temperature points"
     )]
-    temp_steps: usize,
+    pub temp_steps: usize,
 
     #[arg(
         long,
@@ -104,7 +104,7 @@ pub struct Args {
         default_value = "asc",
         help = "Temperature sweep direction"
     )]
-    temp_dir: TemperatureDirection,
+    pub temp_dir: TemperatureDirection,
 
     #[arg(
         long,
@@ -112,5 +112,5 @@ pub struct Args {
         default_value = "1000",
         help = "Thermalization (initialization) steps"
     )]
-    therm_steps: usize
+    pub therm_steps: usize
 }
