@@ -22,7 +22,7 @@ pub enum TemperatureDirection {
 #[command(about = "
 \u{001B}[1m\u{001B}[4mZero-Ising\u{001B}[22m\u{001B}[24m
 
-Ising simulation model with zero state.
+Ising model simulation with zero state.
 Project done as engineering thesis at WUT, PL.\
 ", long_about = None)]
 pub struct Args {

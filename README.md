@@ -1,4 +1,4 @@
-# Zero-Ising
+# Ising model with zero state
 
 Ising model simulation with an optional zero spin state, supporting both periodic chain and Barabási–Albert graph topologies.
 
@@ -64,19 +64,19 @@ ising <SPINS> <TOPOLOGY> [FILE] [OPTIONS]
 Standard Ising model on a periodic chain with 500 nodes:
 
 ```sh
-zero-ising normal chain -S 500 --steps 200
+ising normal chain -S 500 --steps 200
 ```
 
 Extended model (with zero state) on a Barabási–Albert graph, cooling sweep:
 
 ```sh
-zero-ising extended graph results.csv -S 2000 --temp-dir desc --temp-steps 500
+ising extended graph results.csv -S 2000 --temp-dir desc --temp-steps 500
 ```
 
 Weak coupling with strong external field:
 
 ```sh
-zero-ising normal chain -i 0.5 -e 2.0 --temp-low 0.1 --temp-high 5.0
+ising normal chain -i 0.5 -e 2.0 --temp-low 0.1 --temp-high 5.0
 ```
 
 ## Output
