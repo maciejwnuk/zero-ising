@@ -36,10 +36,10 @@ impl Ising {
 
         let spins: Vec<i8> = match states {
             States::Normal => {
-                (0..size).map(|_| *[-1i8, 1i8].choose(&mut rng).unwrap()).collect()
+                (0..size).map(|_| *[-1, 1].choose(&mut rng).unwrap()).collect()
             },
             States::Extended => {
-                (0..size).map(|_| *[-1i8, 0i8, 1i8].choose(&mut rng).unwrap()).collect()
+                (0..size).map(|_| *[-1, 0, 1].choose(&mut rng).unwrap()).collect()
             },
         };
 
@@ -65,7 +65,7 @@ impl Ising {
                     old_spin * -1
                 },
                 States::Extended => {
-                    [-1i8, 0i8, 1i8].into_iter()
+                    [-1, 0, 1].into_iter()
                         .filter(|x| *x != old_spin)
                         .choose(&mut rng)
                         .unwrap()
@@ -89,7 +89,7 @@ impl Ising {
 
             let exponent = beta * energy_change;
 
-            let probability = (1f64 + exponent.exp()).recip();
+            let probability = (1. + exponent.exp()).recip();
 
             if probability > rng.random::<f64>() {
                 self.spins[i] = new_spin;
@@ -125,6 +125,6 @@ impl Ising {
             .map(f64::from)
             .sum::<f64>();
 
-        - self.fields.0 * spin_product - self.fields.1 * spin_sum
+        - self.fields.0 * spin_product / 2. - self.fields.1 * spin_sum
     }
 }
