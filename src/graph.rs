@@ -19,8 +19,8 @@ impl Graph {
         match topology {
             Topology::Chain => {
                 for i in 0..size {
-                    adj[i][i - 1] = 1;
-                    adj[i][i + 1] = 1;
+                    adj[i][(i + size - 1) % size] = 1;
+                    adj[i][(i + 1) % size] = 1;
                 }
             },
             Topology::Graph => {
