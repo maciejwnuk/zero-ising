@@ -24,7 +24,7 @@ impl Graph {
                 }
             },
             Topology::Graph => {
-                assert!(size >= 3, "Size must be >= m for Barabasi-Albert");
+                assert!(size >= 3, "Size must be bigger than m = 3 for Barabasi-Albert");
 
                 for i in 0..3 {
                     for j in (i + 1)..3 {
