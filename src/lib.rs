@@ -1,5 +1,3 @@
-const KB: f64 = 1.380649e-23;
-
 #[inline]
 pub fn probability(exponent: f64) -> f64 {
     (1f64 + exponent.exp()).recip()

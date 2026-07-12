@@ -31,7 +31,7 @@ fn main() -> Result<(), io::Error> {
     };
 
     for temp in temperatures {
-        println!("Temperature: {temp:.2} K");
+        println!("Temperature: {temp:.2} K/kB");
 
         print!("Thermalizing... ");
         io::stdout().flush()?;

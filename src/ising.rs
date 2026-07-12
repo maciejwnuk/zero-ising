@@ -8,10 +8,7 @@ use rand::{
     }
 };
 
-use crate::{
-    KB,
-    graph::Graph
-};
+use crate::graph::Graph;
 
 #[derive(Debug, Clone, ValueEnum)]
 pub enum States {
@@ -57,7 +54,7 @@ impl Ising {
         let mut indices: Vec<usize> = (0..size).collect();
         indices.shuffle(&mut rng);
 
-        let beta = (KB * temperature).recip();
+        let beta = temperature.recip();
 
         // Modified Glauber algorithm
         for i in indices {

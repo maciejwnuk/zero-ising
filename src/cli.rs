@@ -24,10 +24,16 @@ Ising simulation model with zero state.
 Project done as engineering thesis at WUT, PL.\
 ", long_about = None)]
 pub struct Args {
-    #[arg(value_enum)]
+    #[arg(
+        value_enum,
+        help = "Spin states of the model"
+    )]
     pub spins: States,
 
-    #[arg(value_enum)]
+    #[arg(
+        value_enum,
+        help = "Topology of graph underlying the model"
+    )]
     pub topology: Topology,
 
     #[arg(
