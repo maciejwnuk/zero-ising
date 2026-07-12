@@ -54,7 +54,11 @@ impl Ising {
         let mut indices: Vec<usize> = (0..size).collect();
         indices.shuffle(&mut rng);
 
-        let beta = temperature.recip();
+        let beta = if temperature == 0.0 {
+            f64::MAX
+        } else {
+            temperature.recip()
+        };
 
         // Modified Glauber algorithm
         for i in indices {
