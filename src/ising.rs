@@ -1,12 +1,5 @@
 use clap::ValueEnum;
-use rand::{
-    RngExt,
-    seq::{
-        IndexedRandom,
-        IteratorRandom,
-        SliceRandom
-    }
-};
+use rand::prelude::*;
 
 use crate::graph::Graph;
 
@@ -130,5 +123,166 @@ impl Ising {
             .sum::<f64>();
 
         - self.fields.0 * spin_product / 2. - self.fields.1 * spin_sum
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::graph::{Graph, Topology};
+
+    #[test]
+    fn test_new_normal() {
+        let graph = Graph::new(10, Topology::Chain);
+        let ising = Ising::new(graph, States::Normal, Fields(1.0, 0.0));
+
+        assert_eq!(ising.state().len(), 10);
+
+        for &spin in ising.state() {
+            assert!(spin == -1 || spin == 1);
+        }
+    }
+
+    #[test]
+    fn test_new_extended() {
+        let mut has_minus_one = false;
+        let mut has_zero = false;
+        let mut has_one = false;
+
+        for _ in 0..100 {
+            let graph = Graph::new(10, Topology::Chain);
+            let ising = Ising::new(graph, States::Extended, Fields(1.0, 0.0));
+
+            assert_eq!(ising.state().len(), 10);
+
+            for &spin in ising.state() {
+                match spin {
+                    -1 => has_minus_one = true,
+                    0 => has_zero = true,
+                    1 => has_one = true,
+                    _ => panic!("Invalid spin value"),
+                }
+            }
+
+            if has_minus_one && has_zero && has_one {
+                break;
+            }
+        }
+
+        assert!(has_minus_one && has_zero && has_one);
+    }
+
+    #[test]
+    fn test_magnetization() {
+        let graph = Graph::new(4, Topology::Chain);
+        let ising = Ising::new(graph, States::Normal, Fields(1.0, 0.0));
+
+        let mag = ising.magnetization();
+
+        let expected_mag: isize = ising.state()
+            .iter()
+            .copied()
+            .map(isize::from)
+            .sum();
+
+        assert_eq!(mag, expected_mag);
+
+        assert!(mag >= -4 && mag <= 4);
+    }
+
+    #[test]
+    fn test_energy() {
+        let graph = Graph::new(2, Topology::Chain);
+        let ising = Ising::new(graph, States::Normal, Fields(1.0, 0.0));
+
+        let energy = ising.energy();
+
+        assert!(energy.is_finite());
+
+        let adj = ising.graph.adj();
+        let spins = ising.state();
+
+        let mut expected_energy = 0.0;
+
+        for i in 0..2 {
+            for j in 0..2 {
+                expected_energy += spins[i] as f64 * adj[i][j] as f64 * spins[j] as f64;
+            }
+        }
+
+        expected_energy = -1.0 * expected_energy / 2.0;
+
+        // Since spins are valid values, expected_energy must match
+        assert_eq!(energy, expected_energy);
+    }
+
+    #[test]
+    fn test_step_ising_normal_t0() {
+        let graph = Graph::new(10, Topology::Chain);
+        let mut ising = Ising::new(graph, States::Normal, Fields(1.0, 0.0));
+
+        let energy_before = ising.energy();
+
+        ising.step(0.0);
+
+        let energy_after = ising.energy();
+
+        assert!(energy_after <= energy_before);
+    }
+
+    #[test]
+    fn test_step_ising_extended_t0() {
+        let graph = Graph::new(10, Topology::Chain);
+        let mut ising = Ising::new(graph, States::Extended, Fields(1.0, 0.0));
+        ising.step(0.0);
+        for &spin in ising.state() {
+            assert!(spin == -1 || spin == 0 || spin == 1);
+        }
+    }
+
+    #[test]
+    fn test_step_t_low() {
+        let mut avg_mag = 0.0;
+
+        let iters = 10;
+
+        for _ in 0..iters {
+            let graph = Graph::new(10, Topology::Chain);
+            let mut ising = Ising::new(graph, States::Normal, Fields(1.0, 0.0));
+
+            for _ in 0..100 {
+                ising.step(0.01);
+            }
+
+            avg_mag += ising.magnetization().abs() as f64;
+        }
+
+        avg_mag /= iters as f64;
+
+        // At low T, J > 0, |magnetization| tends to be large (ordered)
+        assert!(avg_mag > 5.0);
+    }
+
+    #[test]
+    fn test_step_t_high() {
+        let mut avg_mag = 0.0;
+
+        let iters = 10;
+
+        for _ in 0..iters {
+            let graph = Graph::new(10, Topology::Chain);
+            let mut ising = Ising::new(graph, States::Normal, Fields(1.0, 0.0));
+
+            for _ in 0..100 {
+                ising.step(100.0);
+            }
+
+            avg_mag += ising.magnetization().abs() as f64;
+        }
+
+        avg_mag /= iters as f64;
+
+        // At very high T, magnetization should average out around 0
+        assert!(avg_mag < 5.0);
     }
 }

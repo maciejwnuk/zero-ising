@@ -67,3 +67,94 @@ impl Graph {
         &self.adj
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_chain_topology_size() {
+        let graph = Graph::new(10, Topology::Chain);
+
+        assert_eq!(graph.size(), 10);
+    }
+
+    #[test]
+    fn test_chain_topology_symmetric() {
+        let size = 10;
+
+        let graph = Graph::new(size, Topology::Chain);
+        let adj = graph.adj();
+
+        for i in 0..size {
+            for j in 0..size {
+                assert_eq!(adj[i][j], adj[j][i]);
+            }
+        }
+    }
+
+    #[test]
+    fn test_chain_topology_neighbors() {
+        let size = 10;
+
+        let graph = Graph::new(size, Topology::Chain);
+        let adj = graph.adj();
+
+        for i in 0..size {
+            let sum: usize = adj[i].iter().sum();
+            assert_eq!(sum, 2);
+            assert_eq!(adj[i][(i + size - 1) % size], 1);
+            assert_eq!(adj[i][(i + 1) % size], 1);
+            assert_eq!(adj[i][i], 0);
+        }
+    }
+
+    #[test]
+    fn test_chain_topology_size_two() {
+        let graph = Graph::new(2, Topology::Chain);
+        let adj = graph.adj();
+
+        assert_eq!(adj[0][1], 1);
+        assert_eq!(adj[1][0], 1);
+    }
+
+    #[test]
+    fn test_graph_topology_size() {
+        let graph = Graph::new(10, Topology::Graph);
+
+        assert_eq!(graph.size(), 10);
+    }
+
+    #[test]
+    fn test_graph_topology_symmetric_and_no_self_loops() {
+        let size = 10;
+
+        let graph = Graph::new(size, Topology::Graph);
+        let adj = graph.adj();
+
+        for i in 0..size {
+            assert_eq!(adj[i][i], 0);
+            for j in 0..size {
+                assert_eq!(adj[i][j], adj[j][i]);
+            }
+        }
+    }
+
+    #[test]
+    fn test_graph_topology_connected() {
+        let size = 10;
+
+        let graph = Graph::new(size, Topology::Graph);
+        let adj = graph.adj();
+
+        let mut total_edges = 0;
+
+        for i in 0..size {
+            let sum: usize = adj[i].iter().sum();
+            assert!(sum >= 1);
+            total_edges += sum;
+        }
+
+        assert!(total_edges / 2 >= size);
+    }
+}
